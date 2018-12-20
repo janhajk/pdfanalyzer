@@ -32,9 +32,10 @@ var basic = function(app, connection) {
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
             let pdfParser = new PDFParser();
+            var gpg = require(__dirname + '/lib/gpgrechnung.js');
             pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
             pdfParser.on("pdfParser_dataReady", pdfData => {
-                res.send(JSON.stringify(pdfData));
+                res.send(gpg.clean(JSON.stringify(pdfData)));
             });
             fs.readFile(files.fileupload.path, (err, pdfBuffer) => {
                 if (!err) {
