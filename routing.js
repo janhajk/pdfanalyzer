@@ -7,6 +7,8 @@ var utils = require(__dirname + '/utils.js');
 // System
 var path = require('path');
 var fs = require('fs');
+var PDFParser = require("pdf2json");
+
 
 var formidable = require('formidable');
 
@@ -29,7 +31,13 @@ var basic = function(app, connection) {
     app.post('/upload', auth.ensureAuthenticated, function(req, res) {
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
-            utils.log(files);
+            let pdfParser = new PDFParser();
+            // fs.readFile(files., (err, pdfBuffer) => {
+            //     if (!err) {
+            //         pdfParser.parseBuffer(pdfBuffer);
+            //     }
+            })
+            utils.log(files.fileupload);
             res.write('File uploaded');
             res.end();
         });
