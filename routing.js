@@ -25,6 +25,16 @@ var basic = function(app, connection) {
             res.send(data);
         });
     });
+    
+    app.get('/upload', auth.ensureAuthenticated, function(req, res) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function(err, fields, files) {
+            utils.log(files);
+            res.write('File uploaded');
+            res.end();
+        });
+    });
+
 
 
     // app.get('/asset/:aid', auth.ensureAuthenticated, function(req, res) {
