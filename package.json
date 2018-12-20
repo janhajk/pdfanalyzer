@@ -1,0 +1,23 @@
+{
+   "name": "pdfanalyzer",
+   "description": "Smart Analyzing of pdf Files",
+   "version": "0.0.1",
+   "private": true,
+   "scripts": {
+      "start": "node app.js"
+   },
+   "dependencies": {
+      "express": "4.x",
+      "async": "2.1.4",
+      "compression": "1.x.x",
+      "body-parser": "1.x.x",
+      "method-override": "2.3.x",
+      "passport": "0.3.x",
+      "cookie-parser": "1.4.x",
+      "express-session": "1.15.x",
+      "request": "2.x.x",
+      "node-cache": "4.x.x",
+      "pdf2json": "1.x.x",
+      "formidable": "1.x.x"
+   }
+}
