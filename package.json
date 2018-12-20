@@ -19,6 +19,8 @@
       "request": "2.x.x",
       "node-cache": "4.x.x",
       "pdf2json": "1.x.x",
-      "formidable": "1.x.x"
+      "formidable": "1.x.x",
+      "connect-ensure-login": "^0.1.1",
+      "ejs": "^2.3.3"
    }
 }
