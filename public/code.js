@@ -22,6 +22,10 @@
             input.name = 'fileupload';
             var button = document.createElement('input');
             button.type = 'submit';
+            var input1 = document.createElement('input');
+            input1.type = 'text';
+            input1.value = 'GL/';
+            input1.name = 'headerbeginning';
             form.appendChild(input);
             form.appendChild(button);
             content.appendChild(form);

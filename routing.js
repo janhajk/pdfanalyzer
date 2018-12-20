@@ -31,6 +31,7 @@ var basic = function(app, connection) {
     app.post('/upload', /*auth.ensureAuthenticated,*/ function(req, res) {
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
+            utils.log(fields);
             let pdfParser = new PDFParser();
             var gpg = require(__dirname + '/lib/gpgrechnung.js');
             pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
