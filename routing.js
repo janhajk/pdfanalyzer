@@ -36,7 +36,7 @@ var basic = function(app, connection) {
             //     if (!err) {
             //         pdfParser.parseBuffer(pdfBuffer);
             //     }
-            })
+            // })
             utils.log(files.fileupload);
             res.write('File uploaded');
             res.end();
