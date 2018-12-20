@@ -10,14 +10,22 @@ var fs = require('fs');
 
 var formidable = require('formidable');
 
+var auth = require(__dirname + '/auth.js');
 
 
 var basic = function(app, connection) {
-    app.get('/', function(req, res) {
+    
+    app.get('/',
+        function(req, res) {
+            res.render('home');
+        });
+    
+    app.get('/app', auth.ensureAuthenticated, function(req, res) {
         fs.readFile(__dirname + '/public/index.html', 'utf-8', function(err, data) {
             res.send(data);
         });
     });
+
 
     // app.get('/asset/:aid', auth.ensureAuthenticated, function(req, res) {
     //     var aid = req.params.aid;

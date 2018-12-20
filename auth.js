@@ -69,10 +69,7 @@ passport.deserializeUser(function(id, cb) {
 });
 
 
-var ensureAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.redirect('/');
-};
+var ensureAuthenticated = require('connect-ensure-login').ensureLoggedIn();
 exports.ensureAuthenticated = ensureAuthenticated;
 
 var routing = function(app) {
@@ -93,11 +90,11 @@ var routing = function(app) {
     app.get('/logout',
         function(req, res) {
             req.logout();
-            res.redirect('/');
+            res.redirect('/login');
         });
 
     app.get('/profile',
-        require('connect-ensure-login').ensureLoggedIn(),
+        ensureAuthenticated,
         function(req, res) {
             res.render('profile', { user: req.user });
         });
