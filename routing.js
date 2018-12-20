@@ -38,12 +38,7 @@ var basic = function(app, connection) {
                     let data = gpg.clean(JSON.stringify(pdfData));
                     res.send(data);
             });
-            fs.readFile(files.fileupload.path, (err, pdfBuffer) => {
-                if (!err) {
-                    pdfParser.parseBuffer(pdfBuffer);
-                }
-            })
-            utils.log(files.fileupload);
+            pdfParser.loadPDF(files.fileupload.path);
         });
     });
 
