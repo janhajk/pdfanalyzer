@@ -27,19 +27,21 @@ var basic = function(app, connection) {
             res.send(data);
         });
     });
-    
+
     app.post('/upload', auth.ensureAuthenticated, function(req, res) {
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
             let pdfParser = new PDFParser();
-            // fs.readFile(files., (err, pdfBuffer) => {
-            //     if (!err) {
-            //         pdfParser.parseBuffer(pdfBuffer);
-            //     }
-            // })
+            pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
+            pdfParser.on("pdfParser_dataReady", pdfData => {
+                res.send(JSON.stringify(pdfData));
+            });
+            fs.readFile(files.fileupload.path, (err, pdfBuffer) => {
+                if (!err) {
+                    pdfParser.parseBuffer(pdfBuffer);
+                }
+            })
             utils.log(files.fileupload);
-            res.write('File uploaded');
-            res.end();
         });
     });
 
