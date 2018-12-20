@@ -13,11 +13,11 @@ if (dev !== undefined && dev) {
 // Routing
 var routing = require(__dirname + '/routing.js');
 
-// System
-var path = require('path');
-
 // Auth
 var auth = require(__dirname + '/auth.js');
+
+// System
+var path = require('path');
 
 
 // Express
