@@ -35,7 +35,7 @@ var basic = function(app, connection) {
             var gpg = require(__dirname + '/lib/gpgrechnung.js');
             pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
             pdfParser.on("pdfParser_dataReady", function(pdfData) {
-                    let data = gpg.clean(JSON.stringify(pdfData));
+                    let data = gpg.clean(pdfData);
                     res.send(data);
             });
             pdfParser.loadPDF(files.fileupload.path);
