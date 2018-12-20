@@ -27,6 +27,7 @@
             input1.value = 'GL/';
             input1.name = 'headerbeginning';
             form.appendChild(input);
+            form.appendChild(input1);
             form.appendChild(button);
             content.appendChild(form);
       });
