@@ -22,13 +22,13 @@ var basic = function(app, connection) {
             res.render('home', { user: req.user });
         });
 
-    app.get('/app', auth.ensureAuthenticated, function(req, res) {
+    app.get('/app', /*auth.ensureAuthenticated,*/ function(req, res) {
         fs.readFile(__dirname + '/public/app.html', 'utf-8', function(err, data) {
             res.send(data);
         });
     });
 
-    app.post('/upload', auth.ensureAuthenticated, function(req, res) {
+    app.post('/upload', /*auth.ensureAuthenticated,*/ function(req, res) {
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
             let pdfParser = new PDFParser();
