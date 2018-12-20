@@ -14,12 +14,12 @@ var auth = require(__dirname + '/auth.js');
 
 
 var basic = function(app, connection) {
-    
+
     app.get('/',
         function(req, res) {
-            res.render('home');
+            res.render('home', { user: req.user });
         });
-    
+
     app.get('/app', auth.ensureAuthenticated, function(req, res) {
         fs.readFile(__dirname + '/public/index.html', 'utf-8', function(err, data) {
             res.send(data);
