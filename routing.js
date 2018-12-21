@@ -3,16 +3,16 @@ var config = require(__dirname + '/config.js');
 
 var utils = require(__dirname + '/utils.js');
 
+var auth = require(__dirname + '/auth.js');
+
 
 // System
 var path = require('path');
 var fs = require('fs');
 var PDFParser = require("pdf2json");
 
-
+// Middleware for Fileuploads
 var formidable = require('formidable');
-
-var auth = require(__dirname + '/auth.js');
 
 
 var basic = function(app, connection) {
@@ -22,13 +22,13 @@ var basic = function(app, connection) {
             res.render('home', { user: req.user });
         });
 
-    app.get('/app', /*auth.ensureAuthenticated,*/ function(req, res) {
+    app.get('/app', auth.ensureAuthenticated, function(req, res) {
         fs.readFile(__dirname + '/public/app.html', 'utf-8', function(err, data) {
             res.send(data);
         });
     });
 
-    app.post('/upload', /*auth.ensureAuthenticated,*/ function(req, res) {
+    app.post('/upload', auth.ensureAuthenticated, function(req, res) {
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
             utils.log(fields);
