@@ -22,6 +22,7 @@
       "formidable": "1.x.x",
       "connect-ensure-login": "^0.1.1",
       "ejs": "^2.3.3",
-      "jsonexport": "2.x.x"
+      "jsonexport": "2.x.x",
+      "deep-object-diff": "1.x.x"
    }
 }

@@ -1,16 +1,16 @@
-var fs       = require('fs');
-var path     = require('path');
-var config   = require(__dirname + '/config.js');
+var fs = require('fs');
+var path = require('path');
+var config = require(__dirname + '/config.js');
 
 
 
-var date2timestamp = function(y,m,d,h,m,s) {
-    return (new Date(y,m,d,h,m,s).getTime() / 1000);
+var date2timestamp = function(y, m, d, h, m, s) {
+      return (new Date(y, m, d, h, m, s).getTime() / 1000);
 };
 exports.date2timestamp = date2timestamp;
 
 var getFilesizeInBytes = function(filename) {
-    return (fs.statSync(filename)).size;
+      return (fs.statSync(filename)).size;
 };
 exports.getFilesizeInBytes = getFilesizeInBytes;
 
@@ -22,26 +22,26 @@ exports.getFilesizeInBytes = getFilesizeInBytes;
  */
 
 var log = function l(log, type) {
-   if (log === '-') log = '------------------------------------------------------------------------------------------';
-   else if (typeof log === 'string') {
-      log = new Date().toLocaleString() + ': ' + log;
-   }
-   if (type === 'header') {
-      l('-');
-   }
-   if (type === 'fatal') {
-      console.log(log);
-   }
-   if (type === 'mysql') {
-       console.log('There was an error in your mysql');
-       console.log(log);
-   }
-   else if(config.dev) {
-      console.log(log);
-   }
-   if (type === 'header') {
-      l('-');
-   }
+      if (log === '-') log = '------------------------------------------------------------------------------------------';
+      else if (typeof log === 'string') {
+            log = new Date().toLocaleString() + ': ' + log;
+      }
+      if (type === 'header') {
+            l('-');
+      }
+      if (type === 'fatal') {
+            console.log(log);
+      }
+      if (type === 'mysql') {
+            console.log('There was an error in your mysql');
+            console.log(log);
+      }
+      else if (config.dev) {
+            console.log(log);
+      }
+      if (type === 'header') {
+            l('-');
+      }
 };
 exports.log = log;
 
@@ -98,7 +98,53 @@ so therefore they (should) work on any platform.
 
 
 var flatten = function(arr) {
-  return arr.reduce(function (flat, toFlatten) {
-    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-  }, []);
+      return arr.reduce(function(flat, toFlatten) {
+            return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+      }, []);
 }
+
+
+
+let array2csv = function(data) {
+      var file = "";
+      for (let i = 0; i < data.length; i++) {
+            var line = "";
+            for (let r = 0; r < data[i].length; r++) {
+                  if (typeof data[i][r] !== 'number') {
+                        data[i][r] = '"' + data[i][r] + '"';
+                  }
+            }
+      }
+      for (let i = 0; i < data.length; i++) {
+            line = data[i].join(';');
+            line += "\n";
+            file += line;
+      }
+      return file;
+};
+exports.array2csv = array2csv;
+
+
+let csvExport = function(res, allLines, filename) {
+      let csv = array2csv(allLines);
+      res.writeHead(200, {
+            'Content-Type': 'text/csv; charset=utf-8',
+            'Content-Disposition': 'attchment; filename=' + filename + '.csv'
+      });
+      res.write('﻿' + csv);
+      res.end();
+};
+exports.csvExport = csvExport;
+
+
+const fileListSimple = function(files) {
+      let list = [];
+      for (let i = 0; i < files.length; i++) {
+            list.push({
+                  name: files[i][1].name,
+                  path: files[i][1].path
+            });
+      }
+      return list;
+};
+exports.fileListSimple = fileListSimple;

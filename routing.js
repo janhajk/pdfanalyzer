@@ -7,9 +7,7 @@ var auth = require(__dirname + '/auth.js');
 
 
 // System
-var path = require('path');
 var fs = require('fs');
-var PDFParser = require("pdf2json");
 
 // Middleware for Fileuploads
 var formidable = require('formidable');
@@ -22,24 +20,48 @@ var basic = function(app, connection) {
             res.render('home', { user: req.user });
         });
 
-    app.get('/app', auth.ensureAuthenticated, function(req, res) {
+    app.get('/app', /*auth.ensureAuthenticated,*/ function(req, res) {
         fs.readFile(__dirname + '/public/app.html', 'utf-8', function(err, data) {
             res.send(data);
         });
     });
 
-    app.post('/upload', auth.ensureAuthenticated, function(req, res) {
-        var form = new formidable.IncomingForm();
-        form.parse(req, function(err, fields, files) {
-            utils.log(fields);
-            let pdfParser = new PDFParser();
-            var gpg = require(__dirname + '/lib/gpgrechnung.js');
-            pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
-            pdfParser.on("pdfParser_dataReady", function(pdfData) {
-                // console.log(JSON.stringify(pdfData));
-                gpg.clean(pdfData, fields.headerbeginning, res);
-            });
-            pdfParser.loadPDF(files.fileupload.path);
+    app.post('/upload', /*auth.ensureAuthenticated,*/ function(req, res) {
+        let gpg = require(__dirname + '/lib/rapporte.js');
+        let form = new formidable.IncomingForm();
+        let files = [];
+        form.on('file', function(field, file) {
+            files.push([field, file]);
+        });
+        form.parse(req, function(err, fields, files1) {
+            if (err) {
+                console.log(err);
+            }
+            utils.log(fields.compare);
+            files = utils.fileListSimple(files);
+            if (fields.compare) {
+                gpg.compareAllPdfs(files, fields, 'V_', function(err, data) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    else {
+                        res.send(data);
+                        res.end();
+                    }
+                });
+            }
+            else {
+                if (files.length) {
+                    gpg.pdfConcate(files, fields, function(err, allLines) {
+                        if (err === null) {
+                            utils.csvExport(res, allLines, 'output');
+                        }
+                    });
+                }
+                else {
+                    utils.log('No files sent!');
+                }
+            }
         });
     });
 
